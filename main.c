@@ -49,10 +49,6 @@ int encrypt(unsigned char *plaintext, int plaintext_len,unsigned char *key, unsi
     if(1 != EVP_EncryptFinal_ex(ctx, ciphertext + len, &len)) handleErrors();
     ciphertext_len += len;
 
-    // /* Get the tag */
-    // if(1 != EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_cbc_GET_TAG, 16, tag))
-    //     handleErrors();
-
     /* Clean up */
     EVP_CIPHER_CTX_free(ctx);
 
@@ -82,10 +78,6 @@ int decrypt(unsigned char *ciphertext, int ciphertext_len, unsigned char *key, u
 
         plaintext_len = len;
     }
-
-    // /* Set expected tag value. Works in OpenSSL 1.0.1d and later */
-    // if(!EVP_CIPHER_CTX_ctrl(ctx, EVP_CTRL_cbc_SET_TAG, 16, tag))
-    //     handleErrors();
 
     /* Finalise the decryption. A positive return value indicates success,
      * anything else is a failure - the plaintext is not trustworthy.
@@ -158,7 +150,7 @@ int main(int arc, char *argv[])
     /* Do something useful with the ciphertext here */
     printf("Ciphertext is:\n");
     BIO_dump_fp(stdout, ciphertext, ciphertext_len);
-    /*Rewrite de file with the encrypther data*/
+    /*Rewrite de file with the encrypthed data*/
     FILE *file_enc;
     file_enc=fopen("pruebaC.txt","wb");
     fprintf(file_enc,"%s\n",ciphertext);
